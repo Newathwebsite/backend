@@ -1,0 +1,115 @@
+// Every content model uses a hybrid shape: a handful of real columns for
+// whatever the API actually needs to query/filter/sort by (published,
+// category, order, slug), plus one `data` JSON column holding everything
+// else exactly as the React frontend already shapes it (stats, price,
+// sections, media, meta fields, ...). This keeps the schema stable as the
+// frontend's per-record fields grow, instead of a migration every time.
+// The API layer flattens `{...data, ...columns}` back into one object on
+// the way out, so the frontend sees the exact same shape it always has.
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  id        String   @id
+  slug      String   @unique
+  category  String
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Page {
+  slug      String   @id
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id
+  order     Int      @default(0)
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model NewsEvent {
+  id        String   @id
+  order     Int      @default(0)
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobOpening {
+  id        String   @id
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogPost {
+  id        String   @id
+  slug      String   @unique
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LandingPage {
+  id        String   @id
+  slug      String   @unique
+  published Boolean  @default(true)
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Form {
+  id        String   @id
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id           String   @id
+  username     String   @unique
+  passwordHash String
+  role         String   @default("editor")
+  permissions  Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Singleton row (id is always 1) — the one big nested settings object
+// (theme, footer, menu, cardStyle, integrations, ...) exactly as today.
+model Settings {
+  id   Int  @id @default(1)
+  data Json
+}
+
+model Trash {
+  id        String   @id
+  type      String
+  payload   Json
+  deletedAt DateTime @default(now())
+}

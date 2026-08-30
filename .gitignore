@@ -1,0 +1,15 @@
+node_modules/
+
+# Secrets — copy .env.example instead and fill in real values per environment.
+.env
+
+# Local SQLite database and uploaded files — these are runtime data, not
+# source. On Railway, the DB lives on the persistent volume and uploads are
+# served from there too; neither should be committed. (upload.js creates
+# this folder on startup if it's missing, so nothing needs to be committed
+# just to make the directory exist.)
+prisma/dev.db
+uploads/*
+
+# Runtime state for push notification subscriptions.
+subscriptions.json
