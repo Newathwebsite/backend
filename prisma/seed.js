@@ -1,13 +1,15 @@
-// Populates the new database from the exact same seed data the React app
-// already used for its localStorage-only version — so the new backend
-// launches with this session's real content (projects, page sections, hero
-// backgrounds, the sample blog post), not empty tables.
+// Populates the new database with the CMS's initial content (projects, page
+// sections, hero backgrounds, the sample blog post) plus the first admin
+// login. `seedData.js` lives in this repo (copied from ath-react-site, which
+// originated it) so this script is self-contained — it must run standalone
+// in production (e.g. `railway ssh npm run db:seed`), where the sibling
+// ath-react-site repo this was cloned from isn't present on disk.
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import {
   seedProjects, seedPages, seedTestimonials, seedNewsEvents, seedJobOpenings,
   seedBlogPosts, seedMedia, seedLandingPages, seedUsers, seedForms, seedSettings,
-} from '../../ath-react-site/src/data/seedData.js';
+} from './seedData.js';
 
 const prisma = new PrismaClient();
 
