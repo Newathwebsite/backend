@@ -8,7 +8,7 @@
 // the way out, so the frontend sees the exact same shape it always has.
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
